@@ -23,6 +23,22 @@ Container.prototype.render = function() {
     return elem;
   }
 };
+
+Container.prototype.remove = function() {
+  var elem;
+  if (this.id) {
+    elem = document.getElementById(this.id);
+    elem.remove();
+    return true;
+  } else if (this.className) {
+    elem = document.querySelector("." + this.className);
+    elem.remove();
+    return true;
+  }
+  console.log("For remove element must have id or class name");
+  return false;
+};
+
 /**
  * Comments - constructor
  *
