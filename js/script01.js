@@ -6,7 +6,7 @@
 function Container(options) {
   this.id = options.id;
   this.className = options.className;
-  this.element = options.elementName;
+  this.element = options.elementName || "div";
   this.data = options.data;
 }
 /**
@@ -16,12 +16,11 @@ Container.prototype.render = function() {
   if (this.element) {
     return this.element;
   } else {
-    var div = document.createElement("div");
-    div.id = this.id;
-    div.classList.add(this.className);
-    this.element = div;
+    var elem = document.createElement(this.element);
+    if (this.id) elem.id = this.id;
+    if (this.className) elem.classList.add(this.className);
 
-    return div;
+    return elem;
   }
 };
 /**
