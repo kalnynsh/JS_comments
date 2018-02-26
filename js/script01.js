@@ -3,10 +3,11 @@
  * Container - constractor for base class
  *
  */
-function Container() {
-  this.id = "";
-  this.className = "";
-  this.element = null;
+function Container(options) {
+  this.id = options.id;
+  this.className = options.className;
+  this.element = options.elementName;
+  this.data = options.data;
 }
 /**
  * render - method return any this.elements or creaate new "div"
