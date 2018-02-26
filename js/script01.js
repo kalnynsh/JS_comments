@@ -37,8 +37,8 @@ Container.prototype.render = function() {
  */
 function Comments(options) {
   var comments;
-
-  this.init = function() {
+  // Send POST request with options.body
+  this.init = function(callback) {
     var xhr = new XMLHttpRequest();
     var body = options.body;
     // POST request body =
@@ -67,16 +67,26 @@ function Comments(options) {
 
       if (xhr.status === 200) {
         try {
-            var results = JSON.parse(xhr.responseText);
-            comments = results;
-          } catch(err) {
-              console.error(err);
+          var results = JSON.parse(xhr.responseText);
+          comments = results;
+          if (typeof callback === "function") {
+            callback();
           }
-      } else {
-            alert( "Ошибка: " + (this.status ? this.statusText : "запрос не удался") ); 
+        } catch (err) {
+          console.error(err);
         }
-    };
-};
+      } else {
+        alert(
+          "Ошибка: " + (this.status ? this.statusText : "запрос не удался")
+        );
+      }
+    }; // onready..
+  }; // init
+
+  this.getComments = function() {
+    return comments;
+  };
+}
 
 /** Static
  * class Comments property
