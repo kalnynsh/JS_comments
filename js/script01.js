@@ -107,4 +107,45 @@ function Comments(options) {
 /** Static
  * class Comments property
  * */
-Comments.endpoint = "http://api.spacenear.ru/comments.php";
+Comments.endpoint = "http://api.spacenear.ru/comments.php"; // POST request body = // "add_review=true&id_user=342&text=Lorem" ( add comment ) // "approve_review=true&id_comment=342" ( approve comment ) // "delete_review=true&id_comment=342" ( delete comment ) // "show_reviews=true" ( show comments )
+
+/** template object for Comments */
+
+var commentOptions = {
+  id_user: null,
+  id_comment: null,
+  add_review: false,
+  text: "",
+  approve_review: false,
+  delete_review: false,
+  show_reviews: false,
+  body: function() {
+    if (this.show_reviews) {
+      return "show_reviews" + "=" + "true";
+    }
+    if (this.add_review && this.id_user && this.text) {
+      return (
+        "add_review" +
+        "=" +
+        "true" +
+        "&id_user=" +
+        this.id_user +
+        "&text=" +
+        encodeURIComponent(this.text)
+      );
+    }
+    if (this.approve_review && this.id_comment) {
+      return "approve_review" + "=" + "true" + "&id_comment=" + this.id_comment;
+    }
+    if (this.delete_review && this.id_comment) {
+      return "delete_review" + "=" + "true" + "&id_comment=" + this.id_comment;
+    }
+  }
+};
+
+/** show method */
+Comments.prototype.show = function(options) {
+  var self = this;
+  // Create new ooptions object from paramentr
+  var opt = Object.create(options);
+};
