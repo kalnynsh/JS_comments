@@ -54,9 +54,9 @@ Container.prototype.remove = function() {
 function Comments(options) {
   var comments;
   // Send POST request with options.body
-  this.init = function(callback) {
+  this.init = function(initBody, callback) {
     var xhr = new XMLHttpRequest();
-    var body = options.body;
+    var body = initBody;
     // POST request body =
     // "add_review=true&id_user=342&text=Lorem" ( add comment )
     // "approve_review=true&id_comment=342" ( approve comment )
@@ -152,5 +152,79 @@ Comments.prototype.show = function(options) {
   opt.show_reviews = true;
   var body = opt.body;
 
-  Comments.init(body);
+  if (this.getComments()) {
+    // Have data, render comments list
+    var parentContainer = document.querySelector(".content__info1 .comments");
+    var commentsArray;
+    // Show only =< 15 comments
+    if (this.getComments().length >= 15) {
+      commentsArray = this.getComments().slice(0, 15);
+    } else {
+      commentsArray = this.getComments();
+    }
+
+    for (var i = 0; i < commentsArray.length; i++) {
+      var commentElem = new Container({
+        elementName: "div",
+        className: "comment"
+      }).render();
+      commentElem.dataset.commentNumber = commentsArray[i].id_comment;
+
+      var commentLable = new Container({
+        elementName: "div",
+        className: "comment__label"
+      }).render();
+
+      var commentIcon = new Container({
+        elementName: "i",
+        className: "fas fa-book"
+      }).render();
+
+      commentLable.appendChild(commentIcon);
+      commentElem.appendChild(commentLable);
+
+      var commentBody = new Container({
+        elementName: "div",
+        className: "comment__body"
+      }).render();
+
+      commentBody.textContent = commentsArray[i].text;
+      commentElem.appendChild(commentBody);
+
+      var commentStatus = new Container({
+        elementName: "div",
+        className: "comment__status"
+      }).render();
+
+      if (commentsArray[i].approve == 1) {
+        commentStatus.classList.add("comment__status_yes");
+      }
+
+      var commentSIcon = new Container({
+        elementName: "i",
+        className: "fas fa-check"
+      }).render();
+
+      commentStatus.appendChild(commentSIcon);
+      commentElem.appendChild(commentStatus);
+
+      var commentDelete = new Container({
+        elementName: "div",
+        className: "comment__delete"
+      }).render();
+
+      var commentDIcon = new Container({
+        elementName: "i",
+        className: "fas fa-trash-alt"
+      }).render();
+
+      commentDelete.appendChild(commentDIcon);
+      commentElem.appendChild(commentDelete);
+
+      parentContainer.appendChild(commentElem);
+    }
+  } else {
+    // Not have data
+    self.init(body);
+  }
 };
