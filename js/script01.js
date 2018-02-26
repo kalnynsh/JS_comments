@@ -140,12 +140,17 @@ var commentOptions = {
     if (this.delete_review && this.id_comment) {
       return "delete_review" + "=" + "true" + "&id_comment=" + this.id_comment;
     }
+    return null;
   }
 };
 
 /** show method */
 Comments.prototype.show = function(options) {
   var self = this;
-  // Create new ooptions object from paramentr
+  // Create new options object from parameter
   var opt = Object.create(options);
+  opt.show_reviews = true;
+  var body = opt.body;
+
+  Comments.init(body);
 };
