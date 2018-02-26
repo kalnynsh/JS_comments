@@ -1,0 +1,17 @@
+{
+    "parserOptions": {
+        "ecmaVersion": 5,
+        "sourceType": "script",
+        "ecmaFeatures": {
+            "impliedStrict": true
+        }
+    },
+    "rules": {
+        "semi": "error"
+    },
+    "env": {
+        "browser": true,
+        "node": true
+    },
+    "extends": "eslint:recommended"
+}

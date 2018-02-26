@@ -1,0 +1,51 @@
+[
+  {
+    "id_comment": "6291",
+    "text": "Cold weather((",
+    "approve": "0"
+  },
+  {
+    "id_comment": "6290",
+    "text": "Прошу добавлять комментарии заново, если удаляешь)",
+    "approve": "1"
+  },
+  {
+    "id_comment": "6284",
+    "text": "Привет, это мой комментарий, а ты можешь добавить свой =)",
+    "approve": "1"
+  },
+  {
+    "id_comment": "10",
+    "text":
+      "quis risus sed vulputate odio ut enim blandit volutpat maecenas volutpat blandit aliquam etiam erat velit scelerisque in dictum non consectetur",
+    "approve": "0"
+  },
+  {
+    "id_comment": "9",
+    "text":
+      "morbi blandit cursus risus at ultrices mi tempus imperdiet nulla malesuada pellentesque elit eget gravida cum sociis natoque penatibus et magnis dis parturient montes nascetur ridiculus mus mauris vitae ultricies leo integer malesuada nunc vel risus",
+    "approve": "1"
+  },
+  {
+    "id_comment": "7",
+    "text": "velit sed ullamcorper morbi tincidunt ornare",
+    "approve": "0"
+  },
+  {
+    "id_comment": "6",
+    "text": "integer eget aliquet nibh praesent",
+    "approve": "1"
+  },
+  {
+    "id_comment": "5",
+    "text":
+      "odio pellentesque diam volutpat commodo sed egestas egestas fringilla",
+    "approve": "0"
+  },
+  {
+    "id_comment": "3",
+    "text":
+      "volutpat consequat mauris nunc congue nisi vitae suscipit tellus mauris a diam maecenas sed Maxim Goldy enim ut sem viverra aliquet eget sit amet tellus cras adipiscing enim eu turpis",
+    "approve": "1"
+  }
+]
