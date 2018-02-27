@@ -303,6 +303,32 @@ Comments.prototype.show = function (options) {
 };
 
 /* method add commit */
+Comments.prototype.add = function (options) {
+  var self = this;
+  // Create new options object from parameter
+  var opt = Object.create(options);
+  opt.add_review = true;
+  opt.id_user = Math.floor(Math.random() * 5000) + 1;
+
+  var message = document.getElementById("commentInputID").value;
+  opt.text = message || 'New wise thoughts';
+
+  if (!message) alert('Please make message');
+
+  var body = opt.body();
+
+  self.init(body, function (self, results) {
+    if (results.result == 1) {
+      alert(results.userMessage);
+    } else {
+      alert("Respons from server don`t have result = 1");
+    }
+  });
+};
 
 var comments = new Comments();
 comments.show(commentOptions);
+var commentsAdd = comments.add(commentOptions);
+
+var addCommitBtn = document.getElementById("commentInputSubmitID");
+addCommitBtn.addEventListener('click', commentsAdd);
