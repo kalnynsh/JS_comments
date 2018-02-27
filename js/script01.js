@@ -16,20 +16,6 @@ function Container(options) {
   this.className = options.className || null;
   this.data = options.data || null;
 }
-/**
- * render - method return any this.elements or creaate new "div"
- */
-// Container.prototype.render = function () {
-//   if (this.element) {
-//     return this.element;
-//   } else {
-//     var elem = document.createElement(this.element);
-//     if (this.id) elem.id = this.id;
-//     if (this.className) elem.classList.add(this.className);
-
-//     return elem;
-//   }
-// };
 
 Container.prototype.render = function () {
   var elem = document.createElement(this.element);
@@ -159,7 +145,7 @@ var commentOptions = {
   }
 };
 
-/** show method */
+/** method show */
 Comments.prototype.show = function (options) {
   var self = this;
   // Create new options object from parameter
@@ -315,6 +301,8 @@ Comments.prototype.show = function (options) {
     });
   }
 };
+
+/* method add commit */
 
 var comments = new Comments();
 comments.show(commentOptions);
