@@ -2,17 +2,24 @@
 /**
  * Container - constractor for base class
  *
+ *  @param { any }
+ *  options {
+ *         id: {any},
+ *  className: {string},
+ * elementName: {string},
+ *        data: {string},
+ *  }
  */
 function Container(options) {
-  this.id = options.id;
+  this.id = options.id || null;
   this.className = options.className;
   this.element = options.elementName || "div";
-  this.data = options.data;
+  this.data = options.data || null;
 }
 /**
  * render - method return any this.elements or creaate new "div"
  */
-Container.prototype.render = function() {
+Container.prototype.render = function () {
   if (this.element) {
     return this.element;
   } else {
@@ -24,7 +31,7 @@ Container.prototype.render = function() {
   }
 };
 
-Container.prototype.remove = function() {
+Container.prototype.remove = function () {
   var elem;
   if (this.id) {
     elem = document.getElementById(this.id);
@@ -54,7 +61,7 @@ Container.prototype.remove = function() {
 function Comments(options) {
   var comments;
   // Send POST request with options.body
-  this.init = function(initBody, callback) {
+  this.init = function (initBody, callback) {
     var xhr = new XMLHttpRequest();
     var body = initBody;
     // POST request body =
@@ -70,15 +77,15 @@ function Comments(options) {
 
     xhr.send(body);
 
-    xhr.ontimeout = function() {
+    xhr.ontimeout = function () {
       alert("Извините, запрос превысил максимальное время");
     };
 
-    xhr.onerror = function(error) {
+    xhr.onerror = function (error) {
       alert("Произошла ошибка " + error);
     };
 
-    xhr.onreadystatechange = function() {
+    xhr.onreadystatechange = function () {
       if (xhr.readyState != XMLHttpRequest.DONE) return; // 4
 
       if (xhr.status === 200) {
@@ -99,7 +106,7 @@ function Comments(options) {
     }; // onready..
   }; // init
 
-  this.getComments = function() {
+  this.getComments = function () {
     return comments;
   };
 }
@@ -119,7 +126,7 @@ var commentOptions = {
   approve_review: false,
   delete_review: false,
   show_reviews: false,
-  body: function() {
+  body: function () {
     if (this.show_reviews) {
       return "show_reviews" + "=" + "true";
     }
@@ -145,7 +152,7 @@ var commentOptions = {
 };
 
 /** show method */
-Comments.prototype.show = function(options) {
+Comments.prototype.show = function (options) {
   var self = this;
   // Create new options object from parameter
   var opt = Object.create(options);
@@ -228,3 +235,5 @@ Comments.prototype.show = function(options) {
     self.init(body);
   }
 };
+
+var comments = new Comments();
