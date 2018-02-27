@@ -11,24 +11,31 @@
  *  }
  */
 function Container(options) {
-  this.id = options.id || null;
-  this.className = options.className;
   this.element = options.elementName || "div";
+  this.id = options.id || null;
+  this.className = options.className || null;
   this.data = options.data || null;
 }
 /**
  * render - method return any this.elements or creaate new "div"
  */
-Container.prototype.render = function () {
-  if (this.element) {
-    return this.element;
-  } else {
-    var elem = document.createElement(this.element);
-    if (this.id) elem.id = this.id;
-    if (this.className) elem.classList.add(this.className);
+// Container.prototype.render = function () {
+//   if (this.element) {
+//     return this.element;
+//   } else {
+//     var elem = document.createElement(this.element);
+//     if (this.id) elem.id = this.id;
+//     if (this.className) elem.classList.add(this.className);
 
-    return elem;
-  }
+//     return elem;
+//   }
+// };
+
+Container.prototype.render = function () {
+  var elem = document.createElement(this.element);
+  if (this.id) elem.id = this.id;
+  if (this.className) elem.className = this.className;
+  return elem;
 };
 
 Container.prototype.remove = function () {
@@ -59,8 +66,12 @@ Container.prototype.remove = function () {
  * }
  */
 function Comments(options) {
-  var comments;
-  // Send POST request with options.body
+  // Save context
+  var self = this;
+  // Return comments in var results
+  var results;
+  // Send POST request with body = @param initBody
+  // Handling results in callback() function
   this.init = function (initBody, callback) {
     var xhr = new XMLHttpRequest();
     var body = initBody;
@@ -74,7 +85,6 @@ function Comments(options) {
     xhr.open("POST", url, true);
     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xhr.timeout = 30000; // 30 sec
-
     xhr.send(body);
 
     xhr.ontimeout = function () {
@@ -90,9 +100,9 @@ function Comments(options) {
 
       if (xhr.status === 200) {
         try {
-          var results = JSON.parse(xhr.responseText);
+          results = JSON.parse(xhr.responseText);
           if (typeof callback === "function") {
-            callback();
+            callback(self, results);
           }
         } catch (err) {
           console.error(err);
@@ -106,7 +116,7 @@ function Comments(options) {
   }; // init
 
   this.getComments = function () {
-    return comments;
+    return results;
   };
 }
 
@@ -116,7 +126,6 @@ function Comments(options) {
 Comments.endpoint = "http://api.spacenear.ru/comments.php"; // POST request body = // "add_review=true&id_user=342&text=Lorem" ( add comment ) // "approve_review=true&id_comment=342" ( approve comment ) // "delete_review=true&id_comment=342" ( delete comment ) // "show_reviews=true" ( show comments )
 
 /** template object for Comments */
-
 var commentOptions = {
   id_user: null,
   id_comment: null,
@@ -156,15 +165,15 @@ Comments.prototype.show = function (options) {
   // Create new options object from parameter
   var opt = Object.create(options);
   opt.show_reviews = true;
-  var body = opt.body;
+  var body = opt.body();
 
   if (this.getComments()) {
+    var commentsArray;
     // Have data, render comments list
     var parentContainer = document.querySelector(".content__info1 .comments");
-    var commentsArray;
     // Show only =< 15 comments
-    if (this.getComments().length >= 15) {
-      commentsArray = this.getComments().slice(0, 15);
+    if (this.getComments().length >= 10) {
+      commentsArray = this.getComments().slice(0, 10);
     } else {
       commentsArray = this.getComments();
     }
@@ -226,13 +235,88 @@ Comments.prototype.show = function (options) {
 
       commentDelete.appendChild(commentDIcon);
       commentElem.appendChild(commentDelete);
-
       parentContainer.appendChild(commentElem);
     }
   } else {
     // Not have data
-    self.init(body);
+    self.init(body, function (self, results) {
+      // console.log("We have results");      
+      var commentsArray;
+      // Have data, render comments list
+      var parentContainer = document.querySelector(".content__info1 .comments");
+
+      // Show only =< 15 comments
+      if (results.length >= 10) {
+        commentsArray = results.slice(0, 10);
+      } else {
+        commentsArray = results;
+      }
+
+      // console.log(commentsArray);
+
+      for (var i = 0; i < commentsArray.length; i++) {
+        var commentElem = new Container({
+          elementName: "div",
+          className: "comment"
+        }).render();
+
+        commentElem.dataset.commentNumber = commentsArray[i].id_comment;
+
+        var commentLable = new Container({
+          elementName: "div",
+          className: "comment__label"
+        }).render();
+
+        var commentIcon = new Container({
+          elementName: "i",
+          className: "fas fa-book"
+        }).render();
+
+        commentElem.appendChild(commentLable);
+        commentLable.appendChild(commentIcon);
+
+        var commentBody = new Container({
+          elementName: "div",
+          className: "comment__body"
+        }).render();
+
+        commentBody.textContent = commentsArray[i].text;
+        commentElem.appendChild(commentBody);
+
+        var commentStatus = new Container({
+          elementName: "div",
+          className: "comment__status"
+        }).render();
+
+        if (commentsArray[i].approve == 1) {
+          commentStatus.classList.add("comment__status_yes");
+        }
+
+        var commentSIcon = new Container({
+          elementName: "i",
+          className: "fas fa-check"
+        }).render();
+
+        commentStatus.appendChild(commentSIcon);
+        commentElem.appendChild(commentStatus);
+
+        var commentDelete = new Container({
+          elementName: "div",
+          className: "comment__delete"
+        }).render();
+
+        var commentDIcon = new Container({
+          elementName: "i",
+          className: "fas fa-trash-alt"
+        }).render();
+
+        commentDelete.appendChild(commentDIcon);
+        commentElem.appendChild(commentDelete);
+        parentContainer.appendChild(commentElem);
+      }
+    });
   }
 };
 
 var comments = new Comments();
+comments.show(commentOptions);
