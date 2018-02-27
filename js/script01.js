@@ -252,8 +252,6 @@ Comments.prototype.show = function (options) {
         commentsArray = results;
       }
 
-      // console.log(commentsArray);
-
       for (var i = 0; i < commentsArray.length; i++) {
         var commentElem = new Container({
           elementName: "div",
