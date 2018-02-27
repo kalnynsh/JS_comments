@@ -302,6 +302,11 @@ Comments.prototype.show = function (options) {
   }
 };
 
+/* method remove commit from textarea */
+Comments.prototype.reset = function () {
+  document.getElementById("commentInputID").value = '';
+};
+
 /* method add commit */
 Comments.prototype.add = function (options) {
   var self = this;
@@ -328,7 +333,9 @@ Comments.prototype.add = function (options) {
 
 var comments = new Comments();
 comments.show(commentOptions);
-var commentsAdd = comments.add(commentOptions);
+var commentsAdd = function () {
+  return comments.add(commentOptions);
+};
 
 var addCommitBtn = document.getElementById("commentInputSubmitID");
 addCommitBtn.addEventListener('click', commentsAdd);
