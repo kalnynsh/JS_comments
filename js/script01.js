@@ -91,7 +91,6 @@ function Comments(options) {
       if (xhr.status === 200) {
         try {
           var results = JSON.parse(xhr.responseText);
-          comments = results;
           if (typeof callback === "function") {
             callback();
           }
