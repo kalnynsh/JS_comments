@@ -77,3 +77,8 @@
   border-radius: 6px;
   font-size: 1rem;
 }
+
+.comment-input__btn:hover {
+  cursor: pointer;
+  background-color: rgba(95, 158, 160, 0.8);
+}
