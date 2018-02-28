@@ -334,17 +334,25 @@ Comments.prototype.add = function(options) {
   var message = document.getElementById("commentInputID").value;
   opt.text = message || "New wise thoughts";
 
-  if (!message) alert("Please make message");
+  if (!message) alert("Please write message");
 
   var body = opt.body();
 
   self.init(body, function(self, results) {
     if (results.result == 1) {
       alert(results.userMessage);
+      message = "";
     } else {
       alert("Respons from server don`t have result = 1");
     }
   });
+  // New options for reload
+  opt.add_review = false;
+  opt.show_reviews = true;
+  opt.id_user = "";
+  body = opt.body();
+
+  setTimeout(self.init(body), 8000);
 };
 
 var comments = new Comments();
