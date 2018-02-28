@@ -7,7 +7,7 @@
  *         id: {any},
  *  className: {string},
  * elementName: {string},
- *        dataset: {string}
+ *     dataset: {string}
  *  }
  */
 function Container(options) {
@@ -44,17 +44,9 @@ Container.prototype.remove = function () {
 
 /**
  * Comments - constructor
- *
- * @param {any} options {
- * id_user: {number},
- * add_review: {boolean},
- * approve_review: {boolean},
- * delete_review: {boolean},
- * show_reviews: {boolean},
- * body: {string}
- * }
+ * 
  */
-function Comments(options) {
+function Comments() {
   // Save context
   var self = this;
   // Return comments in var results
@@ -114,7 +106,26 @@ function Comments(options) {
  * */
 Comments.endpoint = "http://api.spacenear.ru/comments.php"; // POST request body = // "add_review=true&id_user=342&text=Lorem" ( add comment ) // "approve_review=true&id_comment=342" ( approve comment ) // "delete_review=true&id_comment=342" ( delete comment ) // "show_reviews=true" ( show comments )
 
-/** template object for Comments */
+/** template object for Comments 
+ * * id_user: {
+     number
+   },
+   * add_review: {
+     boolean
+   },
+   * approve_review: {
+     boolean
+   },
+   * delete_review: {
+     boolean
+   },
+   * show_reviews: {
+     boolean
+   },
+   * body: {
+     string
+   }
+ */
 var commentOptions = {
   id_user: null,
   id_comment: null,
@@ -244,10 +255,11 @@ Comments.prototype.show = function (options) {
       for (var i = 0; i < commentsArray.length; i++) {
         var commentElem = new Container({
           elementName: "div",
-          className: "comment"
+          className: "comment",
+          dataset: commentsArray[i].id_comment
         }).render();
 
-        commentElem.dataset.commentNumber = commentsArray[i].id_comment;
+        // commentElem.dataset.commentNumber = commentsArray[i].id_comment;
 
         var commentLable = new Container({
           elementName: "div",
