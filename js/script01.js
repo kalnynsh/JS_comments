@@ -354,7 +354,21 @@ Comments.prototype.changeStatus = function (options) {
   var self = this;
   var body = options.body();
 
-  console.log(body);
+  self.init(body, function (self, results) {
+    if (results.result == 1) {
+      alert(results.userMessage || "We have result = 1");
+    } else if (results.result == 0) {
+      alert(results.error_message);
+    } else {
+      alert("Response from server don`t have result = 1");
+    }
+  });
+};
+
+/** method changeStatus */
+Comments.prototype.delete = function (options) {
+  var self = this;
+  var body = options.body();
 
   self.init(body, function (self, results) {
     if (results.result == 1) {
@@ -370,48 +384,56 @@ Comments.prototype.changeStatus = function (options) {
 var comments = new Comments();
 comments.show(commentOptions);
 
-var commentsAdd = function () {
-  return comments.add(commentOptions);
-};
-
-var addCommitBtn = document.getElementById("commentInputSubmitID");
-addCommitBtn.addEventListener("click", commentsAdd);
-
 var commentsMainElem = document.querySelector(".content__info1 .comments");
 commentsMainElem.addEventListener("click",
   function (event) {
     return commentsHanler(event, comments, commentOptions);
   });
 
-
 function commentsHanler(event, comments, commentOptions) {
   var target = event.target;
   var commentElem = target.closest(".comment");
-  var commentId = commentElem.dataset.commentNumber;
-  // var commentId = commentElem.getAttribute("data-comment-number");
+  var addCommentBtn = target.closest(".comment-input__btn");
   var changeStatusElem = target.closest(".comment__status");
   var deleteElem = target.closest(".comment__delete");
 
-  if (!commentElem) return; // Not a "DIV.comment"
+  if (!(commentElem || addCommentBtn)) return; // Not a ".comment" OR ".comment-input__btn"
+
+  if (addCommentBtn) {
+    return comments.add(commentOptions);
+  }
 
   if (!(
-      commentElem.contains(changeStatusElem) || commentElem.contains(deleteElem)
+      commentElem.contains(changeStatusElem) ||
+      commentElem.contains(deleteElem)
     )) {
     return;
   }
   // "div.comment" not contain "div.comment__status"
   // or "div.comment__delete"
 
-  if (changeStatusElem.classList.contains("comment__status")) {
+  if (commentElem.dataset.commentNumber) {
+    var commentId = commentElem.dataset.commentNumber;
+  }
+  // var commentId = commentElem.getAttribute("data-comment-number");
+
+  if (changeStatusElem) {
     // Change status comments.changeStatus()
     // var idComment =
     if (comments instanceof Comments) {
-      var opt = Object.create(commentOptions); // from cloure
-      opt.approve_review = true;
-      opt.id_comment = commentId;
-      comments.changeStatus(opt);
+      var optApprove = Object.create(commentOptions); // from cloure
+      optApprove.approve_review = true;
+      optApprove.id_comment = commentId;
+      return comments.changeStatus(optApprove);
     } else {
       console.log("We don`t have instence of Comments");
+      return;
     }
+  } else if (deleteElem) {
+    var optDelete = Object.create(commentOptions); // from cloure
+    optDelete.delete_review = true;
+    optDelete.id_comment = commentId;
+
+    return comments.delete(optDelete);
   }
 }
