@@ -14,20 +14,20 @@ function Container(options) {
   this.element = options.elementName || "div";
   this.id = options.id || null;
   this.className = options.className || null;
-  this.dataset = options.dataset || null;
+  this.data = options.data || null;
 }
 
-Container.prototype.render = function () {
+Container.prototype.render = function() {
   var elem = document.createElement(this.element);
 
   if (this.id) elem.id = this.id;
   if (this.className) elem.className = this.className;
-  if (this.dataset) elem.dataset = this.dataset;
+  if (this.data) elem.data = this.data;
 
   return elem;
 };
 
-Container.prototype.remove = function () {
+Container.prototype.remove = function() {
   var elem;
   if (this.id) {
     elem = document.getElementById(this.id);
@@ -44,7 +44,7 @@ Container.prototype.remove = function () {
 
 /**
  * Comments - constructor
- * 
+ *
  */
 function Comments() {
   // Save context
@@ -53,7 +53,7 @@ function Comments() {
   var results;
   // Send POST request with body = @param initBody
   // Handling results in callback() function
-  this.init = function (initBody, callback) {
+  this.init = function(initBody, callback) {
     var xhr = new XMLHttpRequest();
     var body = initBody;
     // POST request body =
@@ -68,15 +68,15 @@ function Comments() {
     xhr.timeout = 30000; // 30 sec
     xhr.send(body);
 
-    xhr.ontimeout = function () {
+    xhr.ontimeout = function() {
       alert("Извините, запрос превысил максимальное время");
     };
 
-    xhr.onerror = function (error) {
+    xhr.onerror = function(error) {
       alert("Произошла ошибка " + error);
     };
 
-    xhr.onreadystatechange = function () {
+    xhr.onreadystatechange = function() {
       if (xhr.readyState != XMLHttpRequest.DONE) return; // 4
 
       if (xhr.status === 200) {
@@ -96,7 +96,7 @@ function Comments() {
     }; // onready..
   }; // init
 
-  this.getComments = function () {
+  this.getComments = function() {
     return results;
   };
 }
@@ -134,7 +134,7 @@ var commentOptions = {
   approve_review: false,
   delete_review: false,
   show_reviews: false,
-  body: function () {
+  body: function() {
     if (this.show_reviews) {
       return "show_reviews" + "=" + "true";
     }
@@ -160,7 +160,7 @@ var commentOptions = {
 };
 
 /** method show */
-Comments.prototype.show = function (options) {
+Comments.prototype.show = function(options) {
   var self = this;
   // Create new options object from parameter
   var opt = Object.create(options);
@@ -181,7 +181,8 @@ Comments.prototype.show = function (options) {
     for (var i = 0; i < commentsArray.length; i++) {
       var commentElem = new Container({
         elementName: "div",
-        className: "comment"
+        className: "comment",
+        data: commentsArray[i].id_comment
       }).render();
       commentElem.dataset.commentNumber = commentsArray[i].id_comment;
 
@@ -239,8 +240,8 @@ Comments.prototype.show = function (options) {
     }
   } else {
     // Not have data
-    self.init(body, function (self, results) {
-      // console.log("We have results");      
+    self.init(body, function(self, results) {
+      // console.log("We have results");
       var commentsArray;
       // Have data, render comments list
       var parentContainer = document.querySelector(".content__info1 .comments");
@@ -256,7 +257,7 @@ Comments.prototype.show = function (options) {
         var commentElem = new Container({
           elementName: "div",
           className: "comment",
-          dataset: commentsArray[i].id_comment
+          data: commentsArray[i].id_comment
         }).render();
 
         // commentElem.dataset.commentNumber = commentsArray[i].id_comment;
@@ -318,12 +319,12 @@ Comments.prototype.show = function (options) {
 };
 
 /* method remove commit from textarea */
-Comments.prototype.reset = function () {
-  document.getElementById("commentInputID").value = '';
+Comments.prototype.reset = function() {
+  document.getElementById("commentInputID").value = "";
 };
 
 /* method add commit */
-Comments.prototype.add = function (options) {
+Comments.prototype.add = function(options) {
   var self = this;
   // Create new options object from parameter
   var opt = Object.create(options);
@@ -331,13 +332,13 @@ Comments.prototype.add = function (options) {
   opt.id_user = Math.floor(Math.random() * 5000) + 1;
 
   var message = document.getElementById("commentInputID").value;
-  opt.text = message || 'New wise thoughts';
+  opt.text = message || "New wise thoughts";
 
-  if (!message) alert('Please make message');
+  if (!message) alert("Please make message");
 
   var body = opt.body();
 
-  self.init(body, function (self, results) {
+  self.init(body, function(self, results) {
     if (results.result == 1) {
       alert(results.userMessage);
     } else {
@@ -348,9 +349,9 @@ Comments.prototype.add = function (options) {
 
 var comments = new Comments();
 comments.show(commentOptions);
-var commentsAdd = function () {
+var commentsAdd = function() {
   return comments.add(commentOptions);
 };
 
 var addCommitBtn = document.getElementById("commentInputSubmitID");
-addCommitBtn.addEventListener('click', commentsAdd);
+addCommitBtn.addEventListener("click", commentsAdd);
