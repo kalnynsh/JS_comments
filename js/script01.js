@@ -341,18 +341,11 @@ Comments.prototype.add = function(options) {
   self.init(body, function(self, results) {
     if (results.result == 1) {
       alert(results.userMessage);
-      message = "";
+      document.getElementById("commentInputID").value = "";
     } else {
       alert("Respons from server don`t have result = 1");
     }
   });
-  // New options for reload
-  opt.add_review = false;
-  opt.show_reviews = true;
-  opt.id_user = "";
-  body = opt.body();
-
-  setTimeout(self.init(body), 8000);
 };
 
 var comments = new Comments();
