@@ -1,26 +1,29 @@
 "use strict";
 /**
  * Container - constractor for base class
- *
+ * create HTML elements with options
  *  @param { any }
  *  options {
  *         id: {any},
  *  className: {string},
  * elementName: {string},
- *        data: {string},
+ *        dataset: {string}
  *  }
  */
 function Container(options) {
   this.element = options.elementName || "div";
   this.id = options.id || null;
   this.className = options.className || null;
-  this.data = options.data || null;
+  this.dataset = options.dataset || null;
 }
 
 Container.prototype.render = function () {
   var elem = document.createElement(this.element);
+
   if (this.id) elem.id = this.id;
   if (this.className) elem.className = this.className;
+  if (this.dataset) elem.dataset = this.dataset;
+
   return elem;
 };
 
