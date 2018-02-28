@@ -17,7 +17,7 @@ function Container(options) {
   this.data = options.data || null;
 }
 
-Container.prototype.render = function () {
+Container.prototype.render = function() {
   var elem = document.createElement(this.element);
 
   if (this.id) elem.id = this.id;
@@ -27,7 +27,7 @@ Container.prototype.render = function () {
   return elem;
 };
 
-Container.prototype.remove = function () {
+Container.prototype.remove = function() {
   var elem;
   if (this.id) {
     elem = document.getElementById(this.id);
@@ -53,7 +53,7 @@ function Comments() {
   var results;
   // Send POST request with body = @param initBody
   // Handling results in callback() function
-  this.init = function (initBody, callback) {
+  this.init = function(initBody, callback) {
     var xhr = new XMLHttpRequest();
     var body = initBody;
     // POST request body =
@@ -68,15 +68,15 @@ function Comments() {
     xhr.timeout = 30000; // 30 sec
     xhr.send(body);
 
-    xhr.ontimeout = function () {
+    xhr.ontimeout = function() {
       alert("Извините, запрос превысил максимальное время");
     };
 
-    xhr.onerror = function (error) {
+    xhr.onerror = function(error) {
       alert("Произошла ошибка " + error);
     };
 
-    xhr.onreadystatechange = function () {
+    xhr.onreadystatechange = function() {
       if (xhr.readyState != XMLHttpRequest.DONE) return; // 4
 
       if (xhr.status === 200) {
@@ -96,7 +96,7 @@ function Comments() {
     }; // onready..
   }; // init
 
-  this.getComments = function () {
+  this.getComments = function() {
     return results;
   };
 }
@@ -134,7 +134,7 @@ var commentOptions = {
   approve_review: false,
   delete_review: false,
   show_reviews: false,
-  body: function () {
+  body: function() {
     if (this.show_reviews) {
       return "show_reviews" + "=" + "true";
     }
@@ -160,7 +160,7 @@ var commentOptions = {
 };
 
 /** method show */
-Comments.prototype.show = function (options) {
+Comments.prototype.show = function(options) {
   var self = this;
   // Create new options object from parameter
   var opt = Object.create(options);
@@ -240,7 +240,7 @@ Comments.prototype.show = function (options) {
     }
   } else {
     // Not have data
-    self.init(body, function (self, results) {
+    self.init(body, function(self, results) {
       // console.log("We have results");
       var commentsArray;
       // Have data, render comments list
@@ -318,12 +318,12 @@ Comments.prototype.show = function (options) {
 };
 
 /* method remove commit from textarea */
-Comments.prototype.reset = function () {
+Comments.prototype.reset = function() {
   document.getElementById("commentInputID").value = "";
 };
 
 /* method add commit */
-Comments.prototype.add = function (options) {
+Comments.prototype.add = function(options) {
   var self = this;
   // Create new options object from parameter
   var opt = Object.create(options);
@@ -337,7 +337,7 @@ Comments.prototype.add = function (options) {
 
   var body = opt.body();
 
-  self.init(body, function (self, results) {
+  self.init(body, function(self, results) {
     if (results.result == 1) {
       alert(results.userMessage);
       document.getElementById("commentInputID").value = "";
@@ -350,11 +350,11 @@ Comments.prototype.add = function (options) {
 };
 
 /** method changeStatus */
-Comments.prototype.changeStatus = function (options) {
+Comments.prototype.changeStatus = function(options) {
   var self = this;
   var body = options.body();
 
-  self.init(body, function (self, results) {
+  self.init(body, function(self, results) {
     if (results.result == 1) {
       alert(results.userMessage || "We have result = 1");
     } else if (results.result == 0) {
@@ -366,11 +366,11 @@ Comments.prototype.changeStatus = function (options) {
 };
 
 /** method changeStatus */
-Comments.prototype.delete = function (options) {
+Comments.prototype.delete = function(options) {
   var self = this;
   var body = options.body();
 
-  self.init(body, function (self, results) {
+  self.init(body, function(self, results) {
     if (results.result == 1) {
       alert(results.userMessage || "We have result = 1");
     } else if (results.result == 0) {
@@ -385,10 +385,9 @@ var comments = new Comments();
 comments.show(commentOptions);
 
 var commentsMainElem = document.querySelector(".content__info1 .comments");
-commentsMainElem.addEventListener("click",
-  function (event) {
-    return commentsHanler(event, comments, commentOptions);
-  });
+commentsMainElem.addEventListener("click", function(event) {
+  return commentsHanler(event, comments, commentOptions);
+});
 
 function commentsHanler(event, comments, commentOptions) {
   var target = event.target;
@@ -403,10 +402,11 @@ function commentsHanler(event, comments, commentOptions) {
     return comments.add(commentOptions);
   }
 
-  if (!(
-      commentElem.contains(changeStatusElem) ||
-      commentElem.contains(deleteElem)
-    )) {
+  if (
+    !(
+      commentElem.contains(changeStatusElem) || commentElem.contains(deleteElem)
+    )
+  ) {
     return;
   }
   // "div.comment" not contain "div.comment__status"
